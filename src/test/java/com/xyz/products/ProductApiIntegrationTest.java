@@ -3,6 +3,7 @@ package com.xyz.products;
 import com.xyz.products.repository.ProductRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -35,6 +36,11 @@ class ProductApiIntegrationTest {
 
     @Autowired
     private ProductRepository repository;
+
+    @BeforeEach
+    void beforeEach() {
+        repository.deleteAll();
+    }
 
     private String body(Object o) throws Exception {
         return json.writeValueAsString(o);
@@ -71,7 +77,6 @@ class ProductApiIntegrationTest {
 
     @Test
     void givenNoParams_whenList_thenReturnsEverythingInOneEnvelope() throws Exception {
-        repository.deleteAll();
         for (int i = 0; i < 3; i++) {
             mvc.perform(post("/api/v1/products").contentType(MediaType.APPLICATION_JSON)
                     .content(body(Map.of("name", "P" + i, "price", 1.00, "category", "c", "quantity", 1))));
@@ -88,7 +93,6 @@ class ProductApiIntegrationTest {
 
     @Test
     void givenPageParam_whenList_thenReturnsPagedEnvelope() throws Exception {
-        repository.deleteAll();
         for (int i = 0; i < 5; i++) {
             mvc.perform(post("/api/v1/products").contentType(MediaType.APPLICATION_JSON)
                     .content(body(Map.of("name", "P" + i, "price", 1.00, "category", "c", "quantity", 1))));
@@ -106,7 +110,6 @@ class ProductApiIntegrationTest {
 
     @Test
     void givenNameAndDescriptionParams_whenList_thenFiltersIndependentlyCaseInsensitively() throws Exception {
-        repository.deleteAll();
         mvc.perform(post("/api/v1/products").contentType(MediaType.APPLICATION_JSON)
                 .content(body(Map.of("name", "Steel Hammer", "price", 9.99, "category", "tools", "quantity", 1,
                         "description", "heavy duty"))));
