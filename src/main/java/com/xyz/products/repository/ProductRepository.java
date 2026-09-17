@@ -9,12 +9,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    /**
-     * Optional, independent substring filters on name and/or description
-     * (case-insensitive). A {@code null} parameter disables that filter; when
-     * both are given they combine with AND. A {@code null} description column
-     * never matches the description filter.
-     */
     @Query("""
             select p from Product p
             where (cast(:name as string) is null or lower(p.name) like lower(concat('%', cast(:name as string), '%')))
