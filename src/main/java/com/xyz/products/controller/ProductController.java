@@ -7,11 +7,13 @@ import com.xyz.products.dto.ProductResponse;
 
 import com.xyz.products.service.ProductService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +30,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/v1/products")
+@Validated
 public class ProductController {
 
     private static final String DEFAULT_PAGE_SIZE = "" + Integer.MAX_VALUE;
@@ -50,8 +53,8 @@ public class ProductController {
 
     @GetMapping
     public PagedResponse<ProductResponse> list(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int size,
+            @RequestParam(defaultValue = "0") @Min(0) int page,
+            @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) @Min(1) int size,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String description) {
         PageRequest pageable = PageRequest.of(page, size, Sort.by("id").ascending());

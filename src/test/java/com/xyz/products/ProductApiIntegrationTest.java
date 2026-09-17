@@ -132,6 +132,18 @@ class ProductApiIntegrationTest {
     }
 
     @Test
+    void givenNegativePage_whenList_thenReturns400() throws Exception {
+        mvc.perform(get("/api/v1/products").param("page", "-1"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void givenZeroSize_whenList_thenReturns400() throws Exception {
+        mvc.perform(get("/api/v1/products").param("size", "0"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     void givenProduct_whenCreateGetUpdateDelete_thenLifecycleSucceeds() throws Exception {
         String created = mvc.perform(post("/api/v1/products")
                         .contentType(MediaType.APPLICATION_JSON)

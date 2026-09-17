@@ -2,6 +2,7 @@ package com.xyz.products.controller;
 
 import com.xyz.products.exceptions.ProductNotFoundException;
 
+import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -50,6 +51,20 @@ public class GlobalExceptionHandler {
         log.debug("Malformed request body: {}", ex.getMostSpecificCause().getMessage());
         return ApiError.of(HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(), "Malformed JSON request", Map.of());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleConstraintViolation(ConstraintViolationException ex) {
+        Map<String, String> fieldErrors = new LinkedHashMap<>();
+        ex.getConstraintViolations().forEach(v -> {
+            String path = v.getPropertyPath().toString();
+            String field = path.substring(path.lastIndexOf('.') + 1);
+            fieldErrors.putIfAbsent(field, v.getMessage());
+        });
+        log.debug("Constraint violation: {}", fieldErrors);
+        return ApiError.of(HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(), "Validation failed", fieldErrors);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
