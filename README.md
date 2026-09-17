@@ -1,6 +1,6 @@
 # Product Catalog Service
 
-A small REST microservice for managing a product catalog, built with **Java 17 + Spring Boot 3** and backed by **PostgreSQL**.
+A small REST microservice for managing a product catalog, built with **Java 21 + Spring Boot 3** and backed by **PostgreSQL**.
 
 Each product has a `name`, `price`, `category`, and `quantity`.
 
@@ -95,7 +95,7 @@ curl -s http://localhost:8080/api/v1/products
 
 ## Run locally (without Docker)
 
-Requires JDK 17, Maven, and a running PostgreSQL.
+Requires JDK 21, Maven, and a running PostgreSQL.
 
 Start a matching PostgreSQL (skip if you already have one):
 
