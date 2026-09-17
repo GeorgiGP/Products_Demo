@@ -5,7 +5,7 @@ import com.xyz.products.dto.ProductRequest;
 
 import com.xyz.products.exceptions.ProductNotFoundException;
 import com.xyz.products.repository.ProductRepository;
-import com.xyz.products.service.ProductService;
+import com.xyz.products.service.ProductServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,7 +29,7 @@ class ProductServiceTest {
     private ProductRepository repository;
 
     @InjectMocks
-    private ProductService service;
+    private ProductServiceImpl service;
 
     private static ProductRequest sampleRequest() {
         return new ProductRequest("Widget", new BigDecimal("9.99"), "tools", 5, "a handy widget");

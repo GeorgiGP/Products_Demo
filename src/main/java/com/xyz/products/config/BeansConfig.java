@@ -2,6 +2,7 @@ package com.xyz.products.config;
 
 import com.xyz.products.repository.ProductRepository;
 import com.xyz.products.service.ProductService;
+import com.xyz.products.service.ProductServiceImpl;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,6 @@ public class BeansConfig {
 
     @Bean
     public ProductService productService(ProductRepository repository) {
-        return new ProductService(repository);
+        return new ProductServiceImpl(repository);
     }
 }
